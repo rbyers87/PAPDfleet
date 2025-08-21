@@ -235,18 +235,20 @@ function Settings() {
     }
   }
 
-  const filteredProfiles = profiles.filter(profile =>
-    profile.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    profile.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (profile.badge_number && profile.badge_number.includes(searchQuery))
-  );
+// Replace the existing filtering logic with these safer versions:
 
-  const filteredVehicles = vehicles.filter(vehicle =>
-    vehicle.unit_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    vehicle.make.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    vehicle.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    vehicle.year.toString().includes(searchQuery)
-  );
+const filteredProfiles = profiles.filter(profile =>
+  (profile.full_name && profile.full_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+  (profile.email && profile.email.toLowerCase().includes(searchQuery.toLowerCase())) ||
+  (profile.badge_number && profile.badge_number.includes(searchQuery))
+);
+
+const filteredVehicles = vehicles.filter(vehicle =>
+  (vehicle.unit_number && vehicle.unit_number.toLowerCase().includes(searchQuery.toLowerCase())) ||
+  (vehicle.make && vehicle.make.toLowerCase().includes(searchQuery.toLowerCase())) ||
+  (vehicle.model && vehicle.model.toLowerCase().includes(searchQuery.toLowerCase())) ||
+  (vehicle.year && vehicle.year.toString().includes(searchQuery))
+);
 
   if (loading) {
     return (
