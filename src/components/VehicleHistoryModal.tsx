@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Clock, AlertCircle, CheckCircle2, UserCheck } from 'lucide-react';
 import { format } from 'date-fns';
+import { supabase } from '../lib/supabase';
 
 interface HistoryEntry {
   id: string;
