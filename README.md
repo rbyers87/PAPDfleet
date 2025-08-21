@@ -1,5 +1,6 @@
 # FleetApp2
 app would give 404 when refresh on anything other than start page.  Claude.ai instructions:
+
 Step 1: Create the _redirects file
 
 Navigate to your project's public folder (this is where your index.html file is located)
@@ -10,6 +11,7 @@ Open the file and add this single line:
 Save the file
 
 ##add history fallback to vite.config:
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
