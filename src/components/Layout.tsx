@@ -12,7 +12,7 @@ import React from 'react';
     function Layout() {
       const location = useLocation();
       const navigate = useNavigate();
-      const { profile, signOut } = useAuthStore();
+      const { profile, isAdmin, signOut } = useAuthStore();
 
       const handleSignOut = async () => {
         await signOut();
@@ -23,7 +23,7 @@ import React from 'react';
         { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
         { path: '/vehicles', icon: Car, label: 'Vehicles' },
         { path: '/work-orders', icon: ClipboardList, label: 'Work Orders' },
-        { path: '/settings', icon: Settings, label: 'Settings' },
+        ...(isAdmin ? [{ path: '/settings', icon: Settings, label: 'Settings' }] : []),
       ];
 
       return (
@@ -34,7 +34,7 @@ import React from 'react';
                 <div className="flex items-center">
                   <span className="text-xl font-bold">Police Fleet Management</span>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
                   <span>{profile?.full_name}</span>
                   <button
@@ -54,7 +54,7 @@ import React from 'react';
                 {navItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = location.pathname === item.path;
-                  
+
                   return (
                     <Link
                       key={item.path}

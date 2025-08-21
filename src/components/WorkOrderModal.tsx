@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { useAuthStore } from '../stores/authStore';
 
 interface WorkOrderModalProps {
   isOpen: boolean;
@@ -11,10 +12,12 @@ interface WorkOrderModalProps {
 }
 
 function WorkOrderModal({ isOpen, onClose, vehicleId, unitNumber, currentLocation }: WorkOrderModalProps) {
+  const { session } = useAuthStore();
   const [formData, setFormData] = useState({
     description: '',
     priority: 'normal',
     location: currentLocation,
+    mileage: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,6 +28,11 @@ function WorkOrderModal({ isOpen, onClose, vehicleId, unitNumber, currentLocatio
     setError(null);
 
     try {
+      if (!session?.user?.id) {
+        setError('User not authenticated.');
+        return;
+      }
+
       const { error } = await supabase
         .from('work_orders')
         .insert([{
@@ -32,7 +40,8 @@ function WorkOrderModal({ isOpen, onClose, vehicleId, unitNumber, currentLocatio
           description: formData.description,
           priority: formData.priority,
           location: formData.location,
-          status: 'pending'
+          created_by: session.user.id,
+          mileage: formData.mileage,
         }]);
 
       if (error) throw error;
@@ -110,6 +119,20 @@ function WorkOrderModal({ isOpen, onClose, vehicleId, unitNumber, currentLocatio
               onChange={(e) => setFormData({ ...formData, location: e.target.value })}
               className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Where is the vehicle located?"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Current Mileage
+            </label>
+            <input
+              type="number"
+              required
+              value={formData.mileage}
+              onChange={(e) => setFormData({ ...formData, mileage: e.target.value })}
+              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter the current mileage"
             />
           </div>
 

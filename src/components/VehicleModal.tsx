@@ -103,7 +103,12 @@ function VehicleModal({ isOpen, onClose, vehicle, onVehicleUpdate }: VehicleModa
         // Update existing vehicle
         const { error } = await supabase
           .from('vehicles')
-          .update(vehicleData)
+          .update({
+            status: vehicleData.status,
+            assigned_to: vehicleData.assigned_to,
+            current_location: vehicleData.current_location,
+            notes: vehicleData.notes,
+          })
           .eq('id', vehicle.id);
 
         if (error) throw error;
@@ -198,6 +203,7 @@ function VehicleModal({ isOpen, onClose, vehicle, onVehicleUpdate }: VehicleModa
                   value={formData.unit_number}
                   onChange={(e) => setFormData({ ...formData, unit_number: e.target.value })}
                   className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  disabled={!!vehicle}
                 />
               </div>
 
@@ -211,6 +217,7 @@ function VehicleModal({ isOpen, onClose, vehicle, onVehicleUpdate }: VehicleModa
                   value={formData.make}
                   onChange={(e) => setFormData({ ...formData, make: e.target.value })}
                   className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  disabled={!!vehicle}
                 />
               </div>
 
@@ -224,6 +231,7 @@ function VehicleModal({ isOpen, onClose, vehicle, onVehicleUpdate }: VehicleModa
                   value={formData.model}
                   onChange={(e) => setFormData({ ...formData, model: e.target.value })}
                   className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  disabled={!!vehicle}
                 />
               </div>
 
@@ -239,6 +247,7 @@ function VehicleModal({ isOpen, onClose, vehicle, onVehicleUpdate }: VehicleModa
                   value={formData.year}
                   onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
                   className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  disabled={!!vehicle}
                 />
               </div>
 
