@@ -40,7 +40,7 @@ function Login() {
         <div className="flex flex-col items-center mb-8">
           <Shield className="w-12 h-12 text-blue-800 mb-2" />
           <h2 className="text-2xl font-bold text-gray-900">
-            Police Fleet Management
+            PAPD Fleet Management
           </h2>
         </div>
 
